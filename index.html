@@ -22,6 +22,36 @@
       overflow: hidden;
     }
 
+    /* Floating hearts */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      animation: floatUp linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) scale(1.4);
+        opacity: 0;
+      }
+    }
+
     .card {
       background: white;
       padding: 30px 20px;
@@ -31,6 +61,7 @@
       max-width: 360px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       animation: popIn 0.8s ease;
+      z-index: 1;
     }
 
     @keyframes popIn {
@@ -56,7 +87,6 @@
       border: none;
       cursor: pointer;
       position: absolute;
-      transition: transform 0.3s ease;
     }
 
     #yes {
@@ -98,6 +128,9 @@
 
 <body>
 
+  <!-- FLOATING HEARTS -->
+  <div class="hearts"></div>
+
   <div class="card">
     <h1>Will you be my Valentine? 💘</h1>
 
@@ -120,15 +153,16 @@
     const msg = document.getElementById("msg");
 
     function moveNoButton() {
-      const card = document.querySelector(".card");
-      const rect = card.getBoundingClientRect();
+      const container = document.querySelector(".buttons");
+      const rect = container.getBoundingClientRect();
 
       const maxX = rect.width - noBtn.offsetWidth;
-      const maxY = 100;
+      const maxY = rect.height - noBtn.offsetHeight;
 
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
 
+      noBtn.style.transition = "all 0.25s ease-out";
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
@@ -138,13 +172,27 @@
 
     yesBtn.addEventListener("click", () => {
       msg.style.display = "block";
-
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     });
+  </script>
+
+  <script>
+    const heartsContainer = document.querySelector('.hearts');
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerText = '💖';
+
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+      heart.style.fontSize = (14 + Math.random() * 20) + 'px';
+
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createHeart, 500);
   </script>
 
 </body>
