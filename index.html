@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Be My Valentine 💖</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', system-ui, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      animation: popIn 0.8s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      position: relative;
+      height: 120px;
+    }
+
+    button {
+      padding: 14px 26px;
+      font-size: 18px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      transition: transform 0.3s ease;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.08); }
+      100% { transform: translateX(-50%) scale(1); }
+    }
+
+    #no {
+      background: #999;
+      color: white;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .message {
+      font-size: 22px;
+      color: #ff4d6d;
+      margin-top: 20px;
+      display: none;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>Will you be my Valentine? 💘</h1>
+
+    <div class="buttons">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 😜</button>
+    </div>
+
+    <div class="message" id="msg">
+      YAY!!! I knew it 😍💖
+    </div>
+  </div>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const msg = document.getElementById("msg");
+
+    function moveNoButton() {
+      const card = document.querySelector(".card");
+      const rect = card.getBoundingClientRect();
+
+      const maxX = rect.width - noBtn.offsetWidth;
+      const maxY = 100;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    yesBtn.addEventListener("click", () => {
+      msg.style.display = "block";
+
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    });
+  </script>
+
+</body>
+</html>
